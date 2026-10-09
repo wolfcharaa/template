@@ -74,7 +74,7 @@ When one user action intentionally combines existing operations, create an aggre
 - After adding, removing, or renaming a Message/handler/subscriber, compile the registry:
 
 ```bash
-docker/compose/dev.sh exec -T mvd_cake_php php bin/console message-bus:compile
+docker/compose/dev.sh exec -T app php bin/console message-bus:compile
 ```
 
 Registry compilation errors, lost bindings, unexpected flow, or unstable `bindingId` block completion.

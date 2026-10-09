@@ -201,7 +201,7 @@ local function run_compose_words(words)
 
     argv = { "docker/compose/run.sh" }
     append_all(argv, compose_env_args())
-    append_all(argv, { "--app-env-file", state.app_env_file, "-f", "docker/compose/" .. state.compose_env_name .. "/compose.yaml" })
+    append_all(argv, { "--app-env-file", state.app_env_file, "-f", "docker/compose/" .. state.compose_env_name .. "/docker-compose.yaml" })
     append_all(argv, words)
     return run_process(argv, compose_runtime_env())
 end

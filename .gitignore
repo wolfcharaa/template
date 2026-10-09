@@ -8,7 +8,7 @@
 /release-*.bundle
 /release-*-offline.tar
 
-# Repository-local Codex skills installed from this template.
+# Override global excludes: repository-local Codex skills must stay versioned.
 !/.agents/
 !/.agents/skills/
 !/.agents/skills/**

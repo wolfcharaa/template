@@ -1,13 +1,15 @@
 ---
-name: mvdcake-development
-description: Project-specific mvdcake workflow for implementation, refactoring, architecture review, MessageBus, table-registry work, and commit preparation.
+name: cake-development
+description: Develop and review a modular CakePHP application with MessageBus scenarios, table-registry reads, React/Inertia UI, pragmatic hexagonal boundaries, and repository checks. Use for CakePHP implementation, refactoring, architecture review, and commit preparation.
 metadata:
-  short-description: mvdcake project workflow
+  short-description: CakePHP application workflow
 ---
 
-# mvdcake Development
+# CakePHP Application Development
 
-Use this skill together with the global `development` skill for work in `/srv/projects/mvdcake`.
+Use this skill together with the global `development` skill in CakePHP
+application repositories that follow the module and scenario layout described
+below. Repository documentation overrides the examples in this skill.
 
 ## Reference Routing
 
@@ -71,7 +73,7 @@ The project uses `romanfedorskij/message-bus` v6.1.
 - Compile the registry after MessageBus changes:
 
 ```bash
-docker/compose/dev.sh exec -T mvd_cake_php php bin/console message-bus:compile
+docker/compose/dev.sh exec -T app php bin/console message-bus:compile
 ```
 
 ## Business Scenario Tests

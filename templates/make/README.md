@@ -1,11 +1,11 @@
 # Makefile templates
 
-В каталоге два базовых варианта, извлечённых из рабочих проектов:
+В каталоге два базовых framework-варианта:
 
 - `../docker/spiral/Makefile.fragment` — компактный Spiral/RoadRunner-вариант
-  из `phpfiasgeocoder` с Lua helpers;
-- `cakephp-application.Makefile` — обезличенный вариант lifecycle/release
-  команд из `mvdcake`.
+  с Lua helpers;
+- `cakephp-application.Makefile` — CakePHP/multi-service вариант
+  lifecycle/release команд.
 
 Оба варианта придерживаются одного публичного контракта: `docker`, `build`,
 `up`, `reload-env`, `stop`, `remove`, `ps`, `logs`, `config`, `doctor`,

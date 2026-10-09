@@ -18,7 +18,7 @@
 /LICENSE -export-ignore
 /README.md -export-ignore
 /AGENTS.md -export-ignore
-/skills/ -export-ignore
-/skills/** -export-ignore
+/.agents/ -export-ignore
+/.agents/** -export-ignore
 /templates/ -export-ignore
 /templates/** -export-ignore

@@ -1,13 +1,13 @@
 ---
 name: frontend-quality-loop
-description: Run a focused quality loop for material mvdcake React/Inertia UI changes, routing work through the project FSD and React-code baselines plus the Sonner, mobile/touch, visual-polish, and restrained-motion specialists. Use for requested UI polish or hardening and after substantial screen, form, card, modal, registry, or Shared-component changes; do not use for backend-only, copy-only, or pure type/API work.
+description: Run a focused quality loop for material React/Inertia UI changes, routing work through the project FSD and React-code baselines plus Sonner, mobile/touch, visual-polish, and restrained-motion specialists. Use for requested UI polish or hardening and after substantial screen, form, card, modal, registry, or Shared-component changes; do not use for backend-only, copy-only, or pure type/API work.
 metadata:
-  short-description: mvdcake frontend quality loop
+  short-description: React/Inertia frontend quality loop
 ---
 
 # Frontend Quality Loop
 
-Use this skill after or alongside `$frontend-fsd-design` and `$react-code-quality`. It is an orchestration layer, not a replacement for the project's FSD boundaries, React composition/state rules, Shared components, theme tokens, or the baseline in [the application design reference](../frontend-fsd-design/references/application-design.md). Add `$mvdcake-development` when the frontend task changes a backend contract, route, MessageBus scenario, table-registry definition, or project architecture.
+Use this skill after or alongside `$frontend-fsd-design` and `$react-code-quality`. It is an orchestration layer, not a replacement for the project's FSD boundaries, React composition/state rules, Shared components, theme tokens, or the baseline in [the application design reference](../frontend-fsd-design/references/application-design.md). Add `$cake-development` when the frontend task changes a backend contract, route, MessageBus scenario, table-registry definition, or project architecture.
 
 The goal is a screen that works correctly first and then feels deliberate: clear hierarchy, complete async states, reliable feedback, usable pointer/keyboard/touch behavior, and only justified motion. Do not turn a local correction into an unsolicited redesign.
 
@@ -35,7 +35,7 @@ Activate only the specialists whose trigger is present. Do not load the full set
 | --- | --- | --- | --- |
 | `$ask-sonner` | The task touches `notify`, `AppToaster`, queued/promise feedback, toast styling, duplicate/missing notifications, modal stacking, theme, position, swipe, or persistence | No toast behavior or appearance changes | Keep `@shared/AppToast` as the project API and one root toaster; do not introduce page-local Sonner wiring |
 | `$mobile-native` | A compact/touch route, modal/sheet, software keyboard, viewport height, safe area, scrolling, sticky hover, tap feedback, long press, or real-device defect is in scope | The changed surface is demonstrably desktop-only and has no touch behavior | Prefer capability queries and CSS/platform primitives; identify what still requires physical-device verification |
-| `$emil-design-eng` | A material screen/component is being polished, interaction feedback or visual cohesion is part of acceptance, or the user asks for a UI review | Pure transport/type/refactor work or a trivial copy correction | Preserve mvdcake's dense administrative character; in review mode use a `Before | After | Why` table |
+| `$emil-design-eng` | A material screen/component is being polished, interaction feedback or visual cohesion is part of acceptance, or the user asks for a UI review | Pure transport/type/refactor work or a trivial copy correction | Preserve the product's established visual character; in review mode use a `Before | After | Why` table |
 | `$find-animation-opportunities` | The user asks what should animate, asks to make a surface feel more alive, or requests a deliberate motion-discovery pass | Motion is not an objective, or existing motion merely needs correction | This phase is read-only: gate by frequency, purpose, speed, and function; report both accepted and rejected candidates and stop before implementation |
 | `$review-animations` | Existing/new motion needs a dedicated quality decision and the user explicitly requested that review | There is no motion diff, or only general UI review is requested | Follow its required findings table and Block/Approve verdict; use its own standards reference for exact values |
 

@@ -1,4 +1,4 @@
-# Git Conventions For mvdcake
+# Git Conventions For CakePHP Applications
 
 ## History And Authority
 

@@ -13,7 +13,7 @@ local input_path = arg[1]
 local output_path = arg[2]
 
 if not input_path or not output_path or arg[3] then
-    fail("usage: sanitize-legacy-compose.lua <input-compose.yaml> <output-compose.yaml>")
+    fail("usage: sanitize-legacy-compose.lua <input-docker-compose.yaml> <output-docker-compose.yaml>")
 end
 
 local input = io.open(input_path, "r")

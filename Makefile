@@ -6,8 +6,6 @@ export DOCKER_USER ?= $(shell id -u):$(shell id -g)
 
 RUN ?= $(if $(IN_CONTAINER),,$(DOCKER_COMPOSE) run --rm php)
 COMPOSER ?= $(RUN) composer
-SKILLS_PROFILE ?= shared
-SKILLS_DESTINATION ?= .agents/skills
 
 # Container
 
@@ -99,16 +97,8 @@ composer-normalize-check: ## Check composer.json is normalized
 # Project templates
 
 templates-list: ## List reusable Docker, Makefile, and skill templates
-	@find templates skills -type f \( -name 'README.md' -o -name 'Makefile.fragment' -o -name '*.Makefile' -o -name 'SKILL.md' \) -print | sort
+	@find templates .agents/skills -type f \( -name 'README.md' -o -name 'Makefile.fragment' -o -name '*.Makefile' -o -name 'SKILL.md' \) -print | sort
 .PHONY: templates-list
-
-skills-list: ## List installable Codex skill profiles
-	@bin/install-codex-skills --list
-.PHONY: skills-list
-
-skills-install: ## Install Codex skills: SKILLS_PROFILE=mvdcake
-	bin/install-codex-skills --profile "$(SKILLS_PROFILE)" --destination "$(SKILLS_DESTINATION)"
-.PHONY: skills-install
 
 templates-check: ## Validate reusable scripts, skills, and installers
 	bin/check-templates

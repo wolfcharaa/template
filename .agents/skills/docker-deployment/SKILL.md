@@ -17,8 +17,8 @@ adds the local template map and adoption rules.
 - For CakePHP or another multi-service PHP application, start with
   `templates/make/cakephp-application.Makefile` and reuse only the Compose
   wrappers needed from `templates/docker/spiral/compose`.
-- Source-project Codex skills live under `templates/skills`; install a profile
-  only when the new project shares its stack and boundaries.
+- Repository Codex skills live under `.agents/skills`; use only the skills that
+  match the selected application stack and remove unused ones after scaffolding.
 
 Copy assets into a new branch or clean worktree, then adapt before running them.
 Do not overlay a non-empty `docker/` directory without reviewing every

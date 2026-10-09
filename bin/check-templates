@@ -3,12 +3,11 @@ set -eu
 
 SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(CDPATH='' cd -- "${SCRIPT_DIR}/.." && pwd)"
-TMP_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/template-check.XXXXXX")"
-trap 'rm -rf "${TMP_ROOT}"' EXIT INT TERM
+SKILLS_ROOT="${SKILLS_ROOT:-${ROOT_DIR}/.agents/skills}"
 
 cd "${ROOT_DIR}"
 
-find bin templates -type f -name '*.sh' -o -path 'bin/install-codex-skills' -o -path 'bin/check-templates' \
+find bin templates \( -type f -name '*.sh' -o -path 'bin/check-templates' \) \
     | sort \
     | while IFS= read -r file; do
         sh -n "${file}"
@@ -26,7 +25,18 @@ else
     echo "WARN: lua5.3 is unavailable; Lua syntax and smoke checks were skipped." >&2
 fi
 
-find skills templates/skills -type f -name SKILL.md | sort | while IFS= read -r file; do
+if [ ! -d "${SKILLS_ROOT}" ]; then
+    echo "ERROR: skills directory is missing: ${SKILLS_ROOT}" >&2
+    exit 1
+fi
+
+skill_count="$(find "${SKILLS_ROOT}" -type f -name SKILL.md | wc -l | tr -d ' ')"
+if [ "${skill_count}" -eq 0 ]; then
+    echo "ERROR: no SKILL.md files found under ${SKILLS_ROOT}" >&2
+    exit 1
+fi
+
+find "${SKILLS_ROOT}" -type f -name SKILL.md | sort | while IFS= read -r file; do
     first_line="$(sed -n '1p' "${file}")"
     skill_name="$(sed -n '/^name:[[:space:]]*/ { s/^name:[[:space:]]*//; p; q; }' "${file}")"
     frontmatter_end="$(awk 'NR > 1 && $0 == "---" { print NR; exit }' "${file}")"
@@ -41,17 +51,10 @@ find skills templates/skills -type f -name SKILL.md | sort | while IFS= read -r 
     }
 done
 
-bin/install-codex-skills --profile mvdcake --destination "${TMP_ROOT}/skills" >/dev/null
-test -f "${TMP_ROOT}/skills/docker-deployment/SKILL.md"
-test -f "${TMP_ROOT}/skills/mvdcake-development/SKILL.md"
-bin/install-codex-skills --profile phpfiasgeocoder --destination "${TMP_ROOT}/geocoder-skills" >/dev/null
-test -f "${TMP_ROOT}/geocoder-skills/project-template-maintenance/SKILL.md"
-test -f "${TMP_ROOT}/geocoder-skills/gar-ddd/SKILL.md"
-
 if command -v shellcheck >/dev/null 2>&1; then
-    find bin templates -type f -name '*.sh' -o -path 'bin/install-codex-skills' -o -path 'bin/check-templates' \
+    find bin templates \( -type f -name '*.sh' -o -path 'bin/check-templates' \) \
         | sort \
         | xargs shellcheck
 fi
 
-echo "Template checks: ok"
+echo "Template checks: ok (${skill_count} skills)"

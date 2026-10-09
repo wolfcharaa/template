@@ -2,7 +2,7 @@
 
 Read this reference before changing visual composition, hierarchy, forms, cards, registries, modals, feedback, responsive behavior, touch behavior, or motion under `assets/inertia`. Pure type/API/refactoring work that does not alter rendered behavior does not need it.
 
-This is the project design baseline. It distills the useful parts of the installed design skills into mvdcake's existing administrative interface. Do not replace the current visual language with a generic Apple clone, a new component library, or decorative motion.
+This is the project design baseline. It distills the useful parts of the installed design skills into the project's existing administrative interface. Do not replace the current visual language with a generic Apple clone, a new component library, or decorative motion.
 
 ## Intended experience
 
@@ -226,7 +226,7 @@ Device emulation verifies layout, not physical touch feel, keyboard behavior, sa
 
 ## Motion
 
-Motion in mvdcake should feel fast, restrained, and operational. Its valid purposes are press feedback, spatial continuity, state change, and avoiding jarring appearance. Do not add motion only to make a dense administrative screen “more lively”.
+Motion should feel fast, restrained, and operational. Its valid purposes are press feedback, spatial continuity, state change, and avoiding jarring appearance. Do not add motion only to make a dense administrative screen “more lively”.
 
 Use the existing rhythm as the default:
 
@@ -307,4 +307,4 @@ This reference covers ordinary application design. Add a specialized skill only 
 
 Do not invoke all of them for an ordinary form or card change. Their generally applicable rules are already incorporated above.
 
-`imagegen` is for bitmap assets, not for designing repository-native screens or replacing CSS/React composition. `sites` targets Sites-managed websites and does not apply to mvdcake implementation.
+`imagegen` is for bitmap assets, not for designing repository-native screens or replacing CSS/React composition. `sites` targets Sites-managed websites and does not apply to repository-native implementation.

@@ -2,7 +2,7 @@
 
 Use this catalog when an additional specialist would materially improve a React task. Check the available-skill catalog first. If a needed skill is absent, recommend `$skill-installer`; do not install it without explicit authorization.
 
-| Skill | Use it for | mvdcake boundary |
+| Skill | Use it for | Project boundary |
 | --- | --- | --- |
 | `$vercel-composition-patterns` | Boolean-prop proliferation, explicit variants, compound components, reusable component APIs | Apply inside the FSD owner chosen by `$frontend-fsd-design`; do not turn every component into a Provider/compound namespace |
 | `$vercel-react-best-practices` | Rendering/performance review, Effects, rerenders, client bundle and interaction efficiency | Use client-compatible rules only; ignore Next.js/RSC/server advice and preserve focused FSD public APIs |

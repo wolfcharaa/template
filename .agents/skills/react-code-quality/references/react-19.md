@@ -1,4 +1,4 @@
-# React 19 In mvdcake
+# React 19 In React/Inertia Applications
 
 Use this reference for React upgrades and when adopting APIs introduced or materially changed in React 19.
 

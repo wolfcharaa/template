@@ -1,15 +1,15 @@
 ---
 name: react-code-quality
-description: Improve and review mvdcake React/Inertia code for clear component composition, reusable logic, effect and state correctness, typed APIs, and version-gated React 19 usage. Use for React component or hook design, duplication removal, frontend refactors, performance readability, and React upgrades; do not use for backend-only or purely visual styling work.
+description: Improve and review React/Inertia code for clear component composition, reusable logic, effect and state correctness, typed APIs, and version-gated React usage. Use for React component or hook design, duplication removal, frontend refactors, performance readability, and React upgrades; do not use for backend-only or purely visual styling work.
 metadata:
-  short-description: mvdcake React code quality
+  short-description: React/Inertia code quality
 ---
 
 # React Code Quality
 
 Use this skill for React and TypeScript implementation under `assets/inertia`. Use it with `$frontend-fsd-design`: that skill decides ownership, dependency direction, public APIs, Shared reuse, and visual conventions; this skill decides how components, hooks, state, effects, and reusable logic should be shaped inside those boundaries.
 
-Project rules override external React skills. In particular, mvdcake is a CakePHP/Inertia application, not a Next.js or React Server Components application.
+Project rules override external React skills. This workflow targets a client-side React/Inertia application, not Next.js or React Server Components.
 
 ## Reference routing
 

@@ -1,6 +1,6 @@
 # Legacy Feature Architecture Reference
 
-This reference preserves the old mvdcake feature-slice vocabulary. Use it only when touching existing `src/Feature/*` code, reading older decisions, or translating legacy placement into the current `src/Module/<Module>/{UserInterface,Capability,Infrastructure,Feature}` target from `docs/architecture.md`.
+This reference preserves a legacy CakePHP feature-slice vocabulary. Use it only when touching existing `src/Feature/*` code, reading older decisions, or translating legacy placement into the current `src/Module/<Module>/{UserInterface,Capability,Infrastructure,Feature}` target from `docs/architecture.md`.
 
 For new module work, prefer the target architecture in the main skill and `docs/architecture.md`.
 

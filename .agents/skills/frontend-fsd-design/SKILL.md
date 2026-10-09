@@ -1,19 +1,19 @@
 ---
 name: frontend-fsd-design
-description: Plan, implement, and review mvdcake React/Inertia frontend changes with the project's actual Feature-Sliced Design boundaries, Shared components, theme tokens, public APIs, CSS Modules, and registry stack. Use for screens, forms, tables, cards, modals, frontend refactors, and UI architecture; do not use for backend-only work.
+description: Plan, implement, and review a CakePHP/React/Inertia frontend with Feature-Sliced Design boundaries, Shared components, theme tokens, public APIs, CSS Modules, and a registry stack. Use for screens, forms, tables, cards, modals, frontend refactors, and UI architecture; do not use for backend-only work.
 metadata:
-  short-description: mvdcake FSD frontend workflow
+  short-description: CakePHP/Inertia FSD workflow
 ---
 
 # Frontend FSD Design
 
-Use this skill for frontend work under `assets/inertia`. Use it together with `mvdcake-development` when a task also changes a backend contract, route, MessageBus scenario, table-registry definition, or project architecture.
+Use this skill for frontend work under `assets/inertia`. Use it together with `cake-development` when a task also changes a backend contract, route, MessageBus scenario, table-registry definition, or project architecture.
 
 This file is the executable project guide. Do not defer a layer, import, component, or styling decision to an external FSD article. Resolve it from the rules and project examples below.
 
 ## Reference routing
 
-- For any task that changes visual composition, hierarchy, forms, cards, tables, modals, feedback, responsive/touch behavior, or motion, read [references/application-design.md](references/application-design.md) completely before editing. It is the common mvdcake design baseline and includes the routing boundary for specialized installed design skills.
+- For any task that changes visual composition, hierarchy, forms, cards, tables, modals, feedback, responsive/touch behavior, or motion, read [references/application-design.md](references/application-design.md) completely before editing. It is the common application-design baseline and includes the routing boundary for specialized installed design skills.
 - For requested UI polish/hardening or a final quality pass after a material visual or interaction change, add `$frontend-quality-loop`; it owns the iterative specialist-routing and verification loop.
 - For React component/hook/state structure, duplication removal, effect correctness, reusable APIs, or React version changes, add `$react-code-quality`; it refines implementation inside the FSD owner selected here.
 - Pure type, API, query, or architecture work that does not change rendered behavior does not need the design reference.

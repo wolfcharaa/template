@@ -1,12 +1,10 @@
 # Spiral Docker Scripts Template
 
 Этот каталог - переносимый эталон для Docker/Make/Lua-скриптов Spiral-проекта.
-Он собран из проекта `phpfiasgeocoder` (`geo-registry`), но намеренно не
-подключен к runtime напрямую. В каталоге также лежат обезличенные версии
-`compose/dev.sh`, `compose/run.sh` и `compose/doctor.sh`, основанные на рабочих
-обёртках `phpfiasgeocoder`. Сначала шаблон копируется в новый проект, затем
-адаптируются имена сервисов, registry prefix, compose-файлы и список
-обязательных env.
+Он намеренно не подключен к runtime напрямую. В каталоге лежат переносимые
+`compose/dev.sh`, `compose/run.sh` и `compose/doctor.sh`. Сначала шаблон
+копируется в новый проект, затем адаптируются имена сервисов, registry prefix,
+compose-файлы и список обязательных env.
 
 ## Цель
 
@@ -224,7 +222,7 @@ lua5.3 docker/release/manifest.lua \
 
 ```bash
 lua5.3 docker/compose/sanitize-legacy-compose.lua \
-  docker/compose/prod/compose.yaml \
+  docker/compose/prod/docker-compose.yaml \
   /tmp/spiral-prod-legacy.yaml
 ```
 
