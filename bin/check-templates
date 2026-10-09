@@ -1,0 +1,57 @@
+#!/bin/sh
+set -eu
+
+SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(CDPATH='' cd -- "${SCRIPT_DIR}/.." && pwd)"
+TMP_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/template-check.XXXXXX")"
+trap 'rm -rf "${TMP_ROOT}"' EXIT INT TERM
+
+cd "${ROOT_DIR}"
+
+find bin templates -type f -name '*.sh' -o -path 'bin/install-codex-skills' -o -path 'bin/check-templates' \
+    | sort \
+    | while IFS= read -r file; do
+        sh -n "${file}"
+    done
+
+if command -v lua5.3 >/dev/null 2>&1; then
+    find templates -type f -name '*.lua' | sort | while IFS= read -r file; do
+        LUA_CHECK_FILE="${file}" lua5.3 -e 'assert(loadfile(os.getenv("LUA_CHECK_FILE")))'
+    done
+
+    lua5.3 templates/docker/spiral/scripts/dump-plan.lua --set all --format text >/dev/null
+    APP_SECRET=template DATABASE_URL=postgresql://template@database/template \
+        lua5.3 templates/docker/spiral/scripts/check-env.lua APP_SECRET DATABASE_URL >/dev/null
+else
+    echo "WARN: lua5.3 is unavailable; Lua syntax and smoke checks were skipped." >&2
+fi
+
+find skills templates/skills -type f -name SKILL.md | sort | while IFS= read -r file; do
+    first_line="$(sed -n '1p' "${file}")"
+    skill_name="$(sed -n '/^name:[[:space:]]*/ { s/^name:[[:space:]]*//; p; q; }' "${file}")"
+    frontmatter_end="$(awk 'NR > 1 && $0 == "---" { print NR; exit }' "${file}")"
+    folder_name="$(basename "$(dirname "${file}")")"
+
+    [ "${first_line}" = '---' ] || { echo "ERROR: missing YAML frontmatter: ${file}" >&2; exit 1; }
+    [ -n "${frontmatter_end}" ] || { echo "ERROR: unclosed YAML frontmatter: ${file}" >&2; exit 1; }
+    [ -n "${skill_name}" ] || { echo "ERROR: missing skill name: ${file}" >&2; exit 1; }
+    [ "${skill_name}" = "${folder_name}" ] || {
+        echo "ERROR: skill name '${skill_name}' does not match folder '${folder_name}': ${file}" >&2
+        exit 1
+    }
+done
+
+bin/install-codex-skills --profile mvdcake --destination "${TMP_ROOT}/skills" >/dev/null
+test -f "${TMP_ROOT}/skills/docker-deployment/SKILL.md"
+test -f "${TMP_ROOT}/skills/mvdcake-development/SKILL.md"
+bin/install-codex-skills --profile phpfiasgeocoder --destination "${TMP_ROOT}/geocoder-skills" >/dev/null
+test -f "${TMP_ROOT}/geocoder-skills/project-template-maintenance/SKILL.md"
+test -f "${TMP_ROOT}/geocoder-skills/gar-ddd/SKILL.md"
+
+if command -v shellcheck >/dev/null 2>&1; then
+    find bin templates -type f -name '*.sh' -o -path 'bin/install-codex-skills' -o -path 'bin/check-templates' \
+        | sort \
+        | xargs shellcheck
+fi
+
+echo "Template checks: ok"

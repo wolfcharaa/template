@@ -1,0 +1,15 @@
+/var/
+/vendor/
+/.env.local
+/.php-cs-fixer.php
+/compose.override.yaml
+/phpstan.neon
+/docker/data/
+/release-*.bundle
+/release-*-offline.tar
+
+# Repository-local Codex skills installed from this template.
+!/.agents/
+!/.agents/skills/
+!/.agents/skills/**
+!/AGENTS.md

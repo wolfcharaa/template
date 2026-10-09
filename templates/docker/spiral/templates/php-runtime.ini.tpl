@@ -1,0 +1,17 @@
+memory_limit={{PHP_MEMORY_LIMIT}}
+opcache.enable={{PHP_OPCACHE_ENABLE}}
+opcache.enable_cli={{PHP_OPCACHE_ENABLE_CLI}}
+opcache.validate_timestamps={{PHP_OPCACHE_VALIDATE_TIMESTAMPS}}
+opcache.revalidate_freq={{PHP_OPCACHE_REVALIDATE_FREQ}}
+opcache.memory_consumption={{PHP_OPCACHE_MEMORY_CONSUMPTION}}
+opcache.interned_strings_buffer={{PHP_OPCACHE_INTERNED_STRINGS_BUFFER}}
+opcache.max_accelerated_files={{PHP_OPCACHE_MAX_ACCELERATED_FILES}}
+opcache.max_wasted_percentage={{PHP_OPCACHE_MAX_WASTED_PERCENTAGE}}
+opcache.file_update_protection={{PHP_OPCACHE_FILE_UPDATE_PROTECTION}}
+opcache.jit_buffer_size={{PHP_OPCACHE_JIT_BUFFER_SIZE}}
+opcache.use_cwd={{PHP_OPCACHE_USE_CWD}}
+opcache.save_comments={{PHP_OPCACHE_SAVE_COMMENTS}}
+opcache.enable_file_override={{PHP_OPCACHE_ENABLE_FILE_OVERRIDE}}
+opcache.record_warnings={{PHP_OPCACHE_RECORD_WARNINGS}}
+opcache.validate_permission={{PHP_OPCACHE_VALIDATE_PERMISSION}}
+opcache.validate_root={{PHP_OPCACHE_VALIDATE_ROOT}}

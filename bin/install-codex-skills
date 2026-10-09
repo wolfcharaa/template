@@ -1,0 +1,119 @@
+#!/bin/sh
+set -eu
+
+usage() {
+    cat <<'USAGE'
+Install reusable Codex skills into a project.
+
+Usage:
+  bin/install-codex-skills [--profile NAME] [--destination DIR]
+  bin/install-codex-skills --list
+
+Profiles:
+  shared              Install only project-neutral skills (default)
+  mvdcake             Install shared skills and the mvdcake profile
+  phpfiasgeocoder     Install shared skills and the phpfiasgeocoder profile
+
+Existing differing skill directories are never overwritten.
+USAGE
+}
+
+SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(CDPATH='' cd -- "${SCRIPT_DIR}/.." && pwd)"
+PROFILE="shared"
+DESTINATION="${ROOT_DIR}/.agents/skills"
+
+list_profiles() {
+    printf '%s\n' shared
+    find "${ROOT_DIR}/templates/skills" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+}
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --profile)
+            [ "$#" -ge 2 ] || { echo "ERROR: --profile requires a value" >&2; exit 2; }
+            PROFILE="$2"
+            shift 2
+            ;;
+        --profile=*)
+            PROFILE="${1#--profile=}"
+            shift
+            ;;
+        --destination)
+            [ "$#" -ge 2 ] || { echo "ERROR: --destination requires a value" >&2; exit 2; }
+            DESTINATION="$2"
+            shift 2
+            ;;
+        --destination=*)
+            DESTINATION="${1#--destination=}"
+            shift
+            ;;
+        --list)
+            list_profiles
+            exit 0
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "ERROR: unknown argument: $1" >&2
+            usage >&2
+            exit 2
+            ;;
+    esac
+done
+
+case "${DESTINATION}" in
+    ''|/)
+        echo "ERROR: unsafe destination: ${DESTINATION:-<empty>}" >&2
+        exit 2
+        ;;
+esac
+
+profile_exists=0
+for candidate in $(list_profiles); do
+    if [ "${candidate}" = "${PROFILE}" ]; then
+        profile_exists=1
+        break
+    fi
+done
+
+if [ "${profile_exists}" != "1" ]; then
+    echo "ERROR: unknown profile: ${PROFILE}" >&2
+    echo "Available profiles:" >&2
+    list_profiles >&2
+    exit 2
+fi
+
+mkdir -p "${DESTINATION}"
+
+install_catalog() {
+    catalog="$1"
+    [ -d "${catalog}" ] || return 0
+
+    find "${catalog}" -mindepth 1 -maxdepth 1 -type d -print | sort | while IFS= read -r source; do
+        [ -f "${source}/SKILL.md" ] || continue
+        name="$(basename "${source}")"
+        target="${DESTINATION}/${name}"
+
+        if [ -e "${target}" ]; then
+            if diff -qr "${source}" "${target}" >/dev/null 2>&1; then
+                echo "Already up to date: ${target}"
+                continue
+            fi
+
+            echo "ERROR: refusing to overwrite differing skill: ${target}" >&2
+            echo "Compare or remove it explicitly, then rerun the installer." >&2
+            exit 1
+        fi
+
+        cp -R "${source}" "${target}"
+        echo "Installed: ${target}"
+    done
+}
+
+install_catalog "${ROOT_DIR}/skills/shared"
+if [ "${PROFILE}" != "shared" ]; then
+    install_catalog "${ROOT_DIR}/templates/skills/${PROFILE}"
+fi

@@ -1,0 +1,33 @@
+{
+    "name": "romanfedorskij/template",
+    "description": "Romanfedorskij Template",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Roman Fedorskij",
+            "email": "markaryanroma@mail.ru"
+        }
+    ],
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^7.4",
+        "testo/testo": "^0.10.29"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wolfcharaa\\Template\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Wolfcharaa\\Template\\": "tests/"
+        }
+    },
+    "config": {
+        "lock": false,
+        "sort-packages": true
+    }
+}

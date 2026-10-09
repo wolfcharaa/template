@@ -1,0 +1,89 @@
+# Copy this fragment into a Spiral project's root Makefile and adapt names.
+
+SPIRAL_LUA ?= lua5.3
+
+APP_ENV_FILE ?= config/.env
+COMPOSE_ENV_FILE ?=
+DOCKER_ENV ?= dev
+DOCKER_SERVICE ?= spiral-app
+DOCKER_COMPOSE_FILE ?= docker/compose/$(DOCKER_ENV)/compose.yaml
+PROD_COMPOSE_FILE ?= docker/compose/prod/compose.yaml
+DOCKER_COMPOSE_ENV_ARGS := $(if $(strip $(COMPOSE_ENV_FILE)),--env-file "$(COMPOSE_ENV_FILE)",)
+DOCKER_COMPOSE := $(if $(filter dev,$(DOCKER_ENV)),docker/compose/dev.sh $(DOCKER_COMPOSE_ENV_ARGS) --app-env-file "$(APP_ENV_FILE)",docker/compose/run.sh $(DOCKER_COMPOSE_ENV_ARGS) --app-env-file "$(APP_ENV_FILE)" -f "$(DOCKER_COMPOSE_FILE)")
+RELEASE_AMD64_ENV := RELEASE_PLATFORMS=linux/amd64
+
+.PHONY: docker doctor images build pull up reload-env down remove ps logs config shell app composer migrate release change-release env-check render-php-ini dump-plan scripts-check
+
+docker:
+	docker/compose/interactive.sh
+
+doctor:
+	COMPOSE_ENV="$(DOCKER_ENV)" COMPOSE_ENV_FILE="$(COMPOSE_ENV_FILE)" APP_ENV_FILE="$(APP_ENV_FILE)" docker/compose/doctor.sh
+
+images:
+	$(DOCKER_COMPOSE) config --images
+
+build:
+	@test "$(DOCKER_ENV)" != "prod" || { echo "Prod images собираются через make release." >&2; exit 1; }
+	$(DOCKER_COMPOSE) build $(DOCKER_SERVICE)
+
+pull:
+	$(DOCKER_COMPOSE) pull $(DOCKER_SERVICE)
+
+up:
+	$(DOCKER_COMPOSE) up -d --no-build
+
+reload-env:
+	$(DOCKER_COMPOSE) up -d --no-build --force-recreate --no-deps $(DOCKER_SERVICE)
+
+down:
+	$(DOCKER_COMPOSE) stop
+
+remove:
+	$(DOCKER_COMPOSE) down
+
+ps:
+	$(DOCKER_COMPOSE) ps --all
+
+logs:
+	$(DOCKER_COMPOSE) logs --tail="$(or $(TAIL),200)" $(DOCKER_SERVICE)
+
+config:
+	$(DOCKER_COMPOSE) config
+
+shell:
+	$(DOCKER_COMPOSE) exec --user www-data $(DOCKER_SERVICE) sh
+
+app:
+	$(DOCKER_COMPOSE) exec --user www-data $(DOCKER_SERVICE) php app.php $(CLI_ARGS)
+
+composer:
+	$(DOCKER_COMPOSE) exec --user www-data $(DOCKER_SERVICE) composer $(CLI_ARGS)
+
+migrate:
+	$(DOCKER_COMPOSE) exec --user www-data $(DOCKER_SERVICE) php app.php migrate:up --no-interaction
+
+release:
+	$(RELEASE_AMD64_ENV) sh docker/release/create-release.sh $(CLI_ARGS)
+
+change-release:
+	CHANGE_RELEASE_COMPOSE_FILE="$(PROD_COMPOSE_FILE)" APP_ENV_FILE="$(APP_ENV_FILE)" sh docker/release/change-release.sh $(CLI_ARGS)
+
+env-check:
+	$(SPIRAL_LUA) docker/scripts/check-env.lua --env-file "$(APP_ENV_FILE)" APP_SECRET DATABASE_URL
+
+render-php-ini:
+	@mkdir -p docker/data/generated
+	$(SPIRAL_LUA) docker/scripts/render-runtime-php-ini.lua \
+		--env-file "$(APP_ENV_FILE)" \
+		--template docker/templates/php-runtime.ini.tpl \
+		--out docker/data/generated/php-runtime.ini
+
+dump-plan:
+	$(SPIRAL_LUA) docker/scripts/dump-plan.lua --set "$(or $(SET),all)" --format text
+
+scripts-check:
+	find docker -path docker/data -prune -o -name '*.lua' -print0 | \
+		xargs -0 sh -c 'for file do LUA_CHECK_FILE="$$file" $(SPIRAL_LUA) -e '\''assert(loadfile(os.getenv("LUA_CHECK_FILE")))'\''; done' sh
+	find docker -path docker/data -prune -o -name '*.sh' -print0 | xargs -0 sh -n
+	$(SPIRAL_LUA) docker/scripts/dump-plan.lua --set all --format text >/dev/null
